@@ -1,0 +1,102 @@
+.input {
+  width: 272px;
+height: 40px;
+flex-shrink: 0;
+border-radius: 4px;
+border: 1px solid #808080;
+padding-left:16px;
+color: #808080;
+font-family: 'Montserrat', sans-serif;
+font-size: 16px;
+font-style: normal;
+font-weight: 400;
+line-height: 24px; /* 150% */
+letter-spacing: 0.64px;
+}
+a:-webkit-any-link {
+  color: inherit;
+  cursor: auto;
+  text-decoration: none;
+  width: calc((100% - 32px) / 3);
+}
+.toast-container {
+  position: fixed;
+  top: 20px; /* Відступ від верху */
+  right: 20px; /* Відступ від правого краю */
+  display: inline-flex;
+  padding: 4px 60px 4px 20px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 4px;
+  border-bottom: 2px solid #FFBEBE;
+  background: #EF4040;
+  width: 322px;
+  flex-shrink: 0;
+  color: #FAFAFB;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  letter-spacing: 0.5px; 
+  margin-top: 0;
+  margin-bottom: 0;
+}
+.close-button {
+  cursor: pointer;
+  position: absolute;
+  top: 32px;
+  right: 24px;
+  font-size: 24px;
+  color: #FAFAFB;
+}
+.decorative-icon {
+  font-size: 24px;
+  margin-right: 8px;
+  color: #FAFAFB;
+}
+
+.input:hover,
+.input:active {
+  border-color: #4E75FF;
+}
+.input-container.clicked .input { 
+  border-color: #4E75FF;
+}
+.div {
+  display: flex;
+align-items: flex-start;
+gap: 8px;
+margin-top: 36px;
+margin-bottom: 32px;
+justify-content: center;
+}
+.button {
+  display: flex;
+padding: 8px 16px;
+justify-content: center;
+align-items: center;
+gap: 10px;
+border-radius: 8px;
+border-color: #4E75FF;
+background: #4E75FF;
+padding: 8px 16px;
+color: #FFF;
+font-family: 'Montserrat', sans-serif;
+font-size: 16px;
+font-style: normal;
+font-weight: 500;
+line-height: 24px; /* 150% */
+letter-spacing: 0.64px;
+}
+#gallery {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px; /* простір між зображеннями */
+}
+
+#gallery img {
+  width: calc((100% - 32px) / 3); /* ширина одного зображення, з урахуванням простору між ними */
+  height: auto; /* автоматична висота, щоб не порушувати пропорції */
+  margin-bottom: 16px; /* відступ між рядками */
+}
