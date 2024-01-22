@@ -1,36 +1,29 @@
 import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
 let lightbox;
 const apiKey = '41856148-e541297002e84807a45dae6d1';
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 const gallery = document.getElementById('gallery');
-
 searchForm.addEventListener('submit', function (event) {
   event.preventDefault();
   const searchQuery = searchInput.value.trim();
   fetchData(searchQuery, apiKey);
 });
-
 document.addEventListener('DOMContentLoaded', function () {
-  // Ініціалізація Lightbox для галереї зображень
   lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionDelay: 250,
-    widthRatio: 0.9,  // Відношення ширини елемента lightbox до вікна перегляду
-    heightRatio: 0.9, // Відношення висоти елемента lightbox до вікна перегляду
-    scaleImageToRatio: true, // Масштабувати зображення відповідно до відношень ширини та висоти
+    widthRatio: 0.9,
+    heightRatio: 0.9,
+    scaleImageToRatio: true,
   });
-
-  // Додавання обробників клавішних подій
   document.addEventListener('keydown', function (event) {
     if (event.key === 'Escape' && lightbox && lightbox.visible) {
       lightbox.close();
     }
   });
 });
-
 function fetchData(searchQuery, apiKey) {
   const url = `https://pixabay.com/api/?key=${apiKey}&q=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true`;
   showLoadingIndicator();
@@ -56,7 +49,6 @@ function fetchData(searchQuery, apiKey) {
       displayErrorMessage('An error occurred while fetching data. Please try again.');
     });
 }
-
 function showLoadingIndicator() {
   const loadingIndicator = document.querySelector('.loading-indicator');
   if (!loadingIndicator) {
@@ -66,18 +58,15 @@ function showLoadingIndicator() {
     document.body.appendChild(newLoadingIndicator);
   }
 }
-
 function hideLoadingIndicator() {
   const loadingIndicator = document.querySelector('.loading-indicator');
   if (loadingIndicator) {
     loadingIndicator.remove();
   }
 }
-
 function clearGallery() {
   gallery.innerHTML = '';
 }
-
 function displayNoResultsMessage() {
   const toastContainer = document.createElement('div');
   toastContainer.className = 'toast-container';
@@ -97,17 +86,16 @@ function displayNoResultsMessage() {
     toastContainer.remove();
   });
 }
-
 function displayImages(images) {
   const fragment = document.createDocumentFragment();
   images.forEach(image => {
     const linkElement = document.createElement('a');
     linkElement.href = image.webformatURL;
-    linkElement.classList.add('gallery-link'); // Додавання класу gallery-link
+    linkElement.classList.add('gallery-link');
     const imgElement = document.createElement('img');
     imgElement.src = image.webformatURL;
     imgElement.alt = image.tags;
-    imgElement.style.width = '1112px'; // Задані розміри
+    imgElement.style.width = '1112px';
     imgElement.style.height = '640px';
     linkElement.style.width = 'calc((100% - 32px) / 3)';
     linkElement.style.height = 'auto';
@@ -119,33 +107,19 @@ function displayImages(images) {
     fragment.appendChild(linkElement);
   });
   gallery.appendChild(fragment);
-
-  // Перезавантаження lightbox для нових зображень
   lightbox.refresh();
 }
-// Додаємо jQuery, вставте це у ваш HTML перед використанням коду
-// <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
-// Додаємо jQuery, вставте це у ваш HTML перед використанням коду
-// <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-
 gallery.addEventListener('click', function (event) {
   if (event.target.tagName === 'IMG' && lightbox) {
     const galleryImages = document.querySelectorAll('.gallery img');
     const imageIndex = Array.from(galleryImages).indexOf(event.target);
     const originalImageUrl = galleryImages[imageIndex].parentNode.href;
-
     lightbox.open([{
       src: originalImageUrl,
       title: galleryImages[imageIndex].alt
     }]);
-
-    // Очікуємо, коли lightbox відкриється
     lightbox.on('show.simplelightbox', function () {
-      // Знаходимо зображення в lightbox
       const lightboxImage = lightbox.element().find('.sl-image img');
-      
-      // Змінюємо його розміри
       lightboxImage.css({
         width: '1112px',
         height: '640px',
