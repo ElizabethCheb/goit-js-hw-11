@@ -147,3 +147,16 @@ letter-spacing: 0.64px;
 .simplelb-nav a:hover {
   color: #ffd700; /* Жовтий колір при наведенні */
 }
+.slbContent {
+  max-width: none !important;
+  width: 1112px !important;
+  height: 640px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.slbImage {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important; /* або cover, в залежності від потреб */
+}

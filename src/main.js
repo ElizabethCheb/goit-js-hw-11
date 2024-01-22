@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', function () {
   lightbox = new SimpleLightbox('.gallery a', {
     captionsData: 'alt',
     captionDelay: 250,
+    widthRatio: 0.9,  // Відношення ширини елемента lightbox до вікна перегляду
+    heightRatio: 0.9, // Відношення висоти елемента lightbox до вікна перегляду
+    scaleImageToRatio: true, // Масштабувати зображення відповідно до відношень ширини та висоти
   });
 
   // Додавання обробників клавішних подій
@@ -104,6 +107,8 @@ function displayImages(images) {
     const imgElement = document.createElement('img');
     imgElement.src = image.webformatURL;
     imgElement.alt = image.tags;
+    imgElement.style.width = '1112px'; // Задані розміри
+    imgElement.style.height = '640px';
     linkElement.style.width = 'calc((100% - 32px) / 3)';
     linkElement.style.height = 'auto';
     imgElement.style.width = '100%';
@@ -118,3 +123,35 @@ function displayImages(images) {
   // Перезавантаження lightbox для нових зображень
   lightbox.refresh();
 }
+// Додаємо jQuery, вставте це у ваш HTML перед використанням коду
+// <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+// Додаємо jQuery, вставте це у ваш HTML перед використанням коду
+// <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+
+gallery.addEventListener('click', function (event) {
+  if (event.target.tagName === 'IMG' && lightbox) {
+    const galleryImages = document.querySelectorAll('.gallery img');
+    const imageIndex = Array.from(galleryImages).indexOf(event.target);
+    const originalImageUrl = galleryImages[imageIndex].parentNode.href;
+
+    lightbox.open([{
+      src: originalImageUrl,
+      title: galleryImages[imageIndex].alt
+    }]);
+
+    // Очікуємо, коли lightbox відкриється
+    lightbox.on('show.simplelightbox', function () {
+      // Знаходимо зображення в lightbox
+      const lightboxImage = lightbox.element().find('.sl-image img');
+      
+      // Змінюємо його розміри
+      lightboxImage.css({
+        width: '1112px',
+        height: '640px',
+        'max-width': 'none',
+        'max-height': 'none'
+      });
+    });
+  }
+});
