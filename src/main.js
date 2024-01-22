@@ -14,7 +14,18 @@ searchForm.addEventListener('submit', function (event) {
 });
 
 document.addEventListener('DOMContentLoaded', function () {
-  lightbox = new SimpleLightbox('.gallery a', {});
+  // Ініціалізація Lightbox для галереї зображень
+  lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+  });
+
+  // Додавання обробників клавішних подій
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && lightbox && lightbox.visible) {
+      lightbox.close();
+    }
+  });
 });
 
 function fetchData(searchQuery, apiKey) {
@@ -89,6 +100,7 @@ function displayImages(images) {
   images.forEach(image => {
     const linkElement = document.createElement('a');
     linkElement.href = image.webformatURL;
+    linkElement.classList.add('gallery-link'); // Додавання класу gallery-link
     const imgElement = document.createElement('img');
     imgElement.src = image.webformatURL;
     imgElement.alt = image.tags;
@@ -102,25 +114,7 @@ function displayImages(images) {
     fragment.appendChild(linkElement);
   });
   gallery.appendChild(fragment);
+
+  // Перезавантаження lightbox для нових зображень
+  lightbox.refresh();
 }
-
-gallery.addEventListener('click', function (event) {
-  if (event.target.tagName === 'IMG' && lightbox) {
-    lightbox.open({ elements: [event.target] });
-  }
-});
-
-// Additional styling for gallery images and links
-const galleryImages = document.querySelectorAll('.gallery img');
-galleryImages.forEach(image => {
-  image.style.width = 'calc((100% - 32px) / 3)';
-  image.style.height = 'auto';
-  image.style.marginBottom = '16px';
-});
-
-const galleryLinks = document.querySelectorAll('.gallery a');
-galleryLinks.forEach(link => {
-  link.style.width = 'calc((100% - 32px) / 3)';
-  link.style.height = 'auto';
-  link.style.marginBottom = '16px';
-});
