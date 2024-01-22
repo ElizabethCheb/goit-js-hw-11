@@ -1,22 +1,29 @@
 import SimpleLightbox from "simplelightbox";
 import 'simplelightbox/dist/simple-lightbox.min.css';
-
 let lightbox;
 const apiKey = '41856148-e541297002e84807a45dae6d1';
 const searchForm = document.getElementById('search-form');
 const searchInput = document.getElementById('search-input');
 const gallery = document.getElementById('gallery');
-
 searchForm.addEventListener('submit', function (event) {
   event.preventDefault();
   const searchQuery = searchInput.value.trim();
   fetchData(searchQuery, apiKey);
 });
-
 document.addEventListener('DOMContentLoaded', function () {
-  lightbox = new SimpleLightbox('.gallery a', {});
+  lightbox = new SimpleLightbox('.gallery a', {
+    captionsData: 'alt',
+    captionDelay: 250,
+    widthRatio: 0.9,
+    heightRatio: 0.9,
+    scaleImageToRatio: true,
+  });
+  document.addEventListener('keydown', function (event) {
+    if (event.key === 'Escape' && lightbox && lightbox.visible) {
+      lightbox.close();
+    }
+  });
 });
-
 function fetchData(searchQuery, apiKey) {
   const url = `https://pixabay.com/api/?key=${apiKey}&q=${searchQuery}&image_type=photo&orientation=horizontal&safesearch=true`;
   showLoadingIndicator();
@@ -42,7 +49,6 @@ function fetchData(searchQuery, apiKey) {
       displayErrorMessage('An error occurred while fetching data. Please try again.');
     });
 }
-
 function showLoadingIndicator() {
   const loadingIndicator = document.querySelector('.loading-indicator');
   if (!loadingIndicator) {
@@ -52,18 +58,15 @@ function showLoadingIndicator() {
     document.body.appendChild(newLoadingIndicator);
   }
 }
-
 function hideLoadingIndicator() {
   const loadingIndicator = document.querySelector('.loading-indicator');
   if (loadingIndicator) {
     loadingIndicator.remove();
   }
 }
-
 function clearGallery() {
   gallery.innerHTML = '';
 }
-
 function displayNoResultsMessage() {
   const toastContainer = document.createElement('div');
   toastContainer.className = 'toast-container';
@@ -83,15 +86,17 @@ function displayNoResultsMessage() {
     toastContainer.remove();
   });
 }
-
 function displayImages(images) {
   const fragment = document.createDocumentFragment();
   images.forEach(image => {
     const linkElement = document.createElement('a');
     linkElement.href = image.webformatURL;
+    linkElement.classList.add('gallery-link');
     const imgElement = document.createElement('img');
     imgElement.src = image.webformatURL;
     imgElement.alt = image.tags;
+    imgElement.style.width = '1112px';
+    imgElement.style.height = '640px';
     linkElement.style.width = 'calc((100% - 32px) / 3)';
     linkElement.style.height = 'auto';
     imgElement.style.width = '100%';
@@ -102,25 +107,25 @@ function displayImages(images) {
     fragment.appendChild(linkElement);
   });
   gallery.appendChild(fragment);
+  lightbox.refresh();
 }
-
 gallery.addEventListener('click', function (event) {
   if (event.target.tagName === 'IMG' && lightbox) {
-    lightbox.open({ elements: [event.target] });
+    const galleryImages = document.querySelectorAll('.gallery img');
+    const imageIndex = Array.from(galleryImages).indexOf(event.target);
+    const originalImageUrl = galleryImages[imageIndex].parentNode.href;
+    lightbox.open([{
+      src: originalImageUrl,
+      title: galleryImages[imageIndex].alt
+    }]);
+    lightbox.on('show.simplelightbox', function () {
+      const lightboxImage = lightbox.element().find('.sl-image img');
+      lightboxImage.css({
+        width: '1112px',
+        height: '640px',
+        'max-width': 'none',
+        'max-height': 'none'
+      });
+    });
   }
-});
-
-// Additional styling for gallery images and links
-const galleryImages = document.querySelectorAll('.gallery img');
-galleryImages.forEach(image => {
-  image.style.width = 'calc((100% - 32px) / 3)';
-  image.style.height = 'auto';
-  image.style.marginBottom = '16px';
-});
-
-const galleryLinks = document.querySelectorAll('.gallery a');
-galleryLinks.forEach(link => {
-  link.style.width = 'calc((100% - 32px) / 3)';
-  link.style.height = 'auto';
-  link.style.marginBottom = '16px';
 });

@@ -95,8 +95,68 @@ letter-spacing: 0.64px;
   gap: 16px; /* простір між зображеннями */
 }
 
-#gallery img {
-  width: calc((100% - 32px) / 3); /* ширина одного зображення, з урахуванням простору між ними */
-  height: auto; /* автоматична висота, щоб не порушувати пропорції */
-  margin-bottom: 16px; /* відступ між рядками */
+/* Загальні стилі для зображень в галереї */
+.gallery img {
+  width: calc((100% - 32px) / 3);
+  height: auto;
+  margin-bottom: 16px;
+  transition: transform 0.3s ease-in-out;
+}
+
+/* Збільшення зображення при наведенні */
+.gallery img:hover {
+  transform: scale(1.1);
+}
+
+/* Зміна форми курсору на руку при наведенні на зображення */
+.gallery img:hover {
+  cursor: pointer;
+}
+
+/* Стилі для модального вікна */
+.simplelb-overlay {
+  background: rgba(0, 0, 0, 0); /* Прозорий фон */
+}
+
+.simplelb-item {
+  text-align: center; /* Вирівнювання по центру */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh; /* Мінімальна висота 100% висоти вікна */
+  box-sizing: border-box;
+}
+
+.simplelb-item img {
+  max-width: 100%;
+  max-height: 100%;
+  width: 1112px;
+  height: 640px;
+  object-fit: cover; /* Заповнення області зображення */
+  margin: auto;
+  display: block;
+}
+.simplelb-nav {
+  background: none;
+}
+.simplelb-nav a {
+  font-size: 24px;
+  color: white;
+}
+
+.simplelb-nav a:hover {
+  color: #ffd700; /* Жовтий колір при наведенні */
+}
+.slbContent {
+  max-width: none !important;
+  width: 1112px !important;
+  height: 640px !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+
+.slbImage {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: contain !important; /* або cover, в залежності від потреб */
 }
